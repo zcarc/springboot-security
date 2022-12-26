@@ -20,14 +20,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/user/**").authenticated()
+                    .antMatchers("/user/**").authenticated() // 인증(로그인)만 되면 들어갈 수 있는 주소!
                     .antMatchers("/manager/**").access("hasRole('ROLLE_ADMIN') or hasRole('ROLE_MANAGER')")
                     .antMatchers("/admin/**").access("hasRole('ROLLE_ADMIN')")
                 .anyRequest()
                     .permitAll()
                 .and()
                     .formLogin()
-                        .loginPage("/loginForm");
+                        .loginPage("/loginForm")
+                        // .usernameParameter("username2") // 클라이언트에서 name을 username이 아닌 다른 name으로 설정한 경우 여기서 바꿔줘야 한다.
+                        .loginProcessingUrl("/login") // post 요청 /login 이 호출되면 스프링 시큐리티가 낚아채서 대신 로그인을 진행해준다.
+                        .defaultSuccessUrl("/"); // 직접 "/loginForm" 에서 로그인이 성공하면 "/"로 이동하게 되고, 이외에 요청하는 주소가 권한이 없어서 "/loginForm" 로 이동하게 되었다면 로그인 성공 후 최초에 요청한 주소로 이동하게 된다.
 
         return http.build();
     }

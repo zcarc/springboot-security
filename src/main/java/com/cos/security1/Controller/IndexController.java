@@ -4,6 +4,8 @@ import com.cos.security1.model.User;
 import com.cos.security1.repository.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,5 +65,19 @@ public class IndexController {
         userRepository.save(user);
 
         return "redirect:/loginForm";
+    }
+
+    @ResponseBody
+    @Secured("ROLE_ADMIN") // 특정 권한들을 직접 설정할 수 있다.
+    @GetMapping("/info")
+    public String info() {
+        return "개인정보";
+    }
+
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("/data")
+    public String data() {
+        return "데이터정보";
     }
 }

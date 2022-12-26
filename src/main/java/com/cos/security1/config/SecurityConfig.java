@@ -2,6 +2,7 @@ package com.cos.security1.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured 애노테이션 활성화, @PreAuthorize, @PostAuthorize 애노테이션 활성화
 public class SecurityConfig {
 
     @Bean
@@ -21,8 +23,8 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/user/**").authenticated() // 인증(로그인)만 되면 들어갈 수 있는 주소!
-                    .antMatchers("/manager/**").access("hasRole('ROLLE_ADMIN') or hasRole('ROLE_MANAGER')")
-                    .antMatchers("/admin/**").access("hasRole('ROLLE_ADMIN')")
+                    .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest()
                     .permitAll()
                 .and()

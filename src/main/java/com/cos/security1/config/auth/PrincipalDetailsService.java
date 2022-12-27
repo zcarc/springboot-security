@@ -40,6 +40,7 @@ public class PrincipalDetailsService implements UserDetailsService {
         // "Authentication" 객체 내부에 "principalDetails"가 들어가게 된다.
         // 그리고 그 "Authentication" 객체가 "Security Session"으로 들어가게 된다.
         // 이렇게 정상적으로 모두 진행된다면 로그인이 완료된다.
+        // 여기서 리턴을 진행하면 "Authentication"에 바인딩된다.
         return principalDetails;
     }
 

@@ -1,12 +1,15 @@
 package com.cos.security1.config.auth;
 
 import com.cos.security1.model.User;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 
 // 시큐리티가 /login 주소 요청이 오면 낚아채서 로그인을 진행시킨다.
@@ -19,10 +22,15 @@ import java.util.Collection;
 
 // 이 클래스는 Authentication 객체에서 사용할 UserDetails 인터페이스를 상속해서 UserDetails 타입의 객체로 만들어준다.
 
+@Data
 @RequiredArgsConstructor
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private final User user;
+
+    /**
+     * UserDetails 오버라이딩 메서드들
+     */
 
     // 해당 User의 권한을 리턴하는 메서드
     @Override
@@ -81,5 +89,19 @@ public class PrincipalDetails implements UserDetails {
         // 현재 시간 - LoginDate를 해서 1년을 초과하면 false 를 리턴하게 한다.
 
         return true;
+    }
+
+    /**
+     * OAuth2User 오버라이딩 메서드들
+     */
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

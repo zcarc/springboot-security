@@ -14,7 +14,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         System.out.println("userRequest = " + userRequest);
-        System.out.println("userRequest.getClientRegistration() = " + userRequest.getClientRegistration());
+        System.out.println("userRequest.getClientRegistration() = " + userRequest.getClientRegistration()); // "registrationId" 로 어떤 "Oauth"인지 확인 가능
         System.out.println("userRequest.getAccessToken() = " + userRequest.getAccessToken());
         System.out.println("userRequest.getAccessToken().getTokenValue() = " + userRequest.getAccessToken().getTokenValue());
         System.out.println("super.loadUser(userRequest) = " + super.loadUser(userRequest));
@@ -26,6 +26,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // provider = "google"
         // providerId = "102921089596693885555"
 
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+
+        // 회원가입을 강제로 진행할 예정
         return super.loadUser(userRequest);
     }
 }

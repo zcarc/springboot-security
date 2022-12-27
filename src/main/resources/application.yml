@@ -25,3 +25,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+
+  profiles:
+    group:
+      oauth: oauth

@@ -1,5 +1,7 @@
 package com.cos.security1.config;
 
+import com.cos.security1.config.oauth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,10 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured 애노테이션 활성화, @PreAuthorize, @PostAuthorize 애노테이션 활성화
 public class SecurityConfig {
+
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean
     public BCryptPasswordEncoder encodePwd() {
@@ -35,7 +40,9 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/") // 직접 "/loginForm" 에서 로그인이 성공하면 "/"로 이동하게 되고, 이외에 요청하는 주소가 권한이 없어서 "/loginForm" 로 이동하게 되었다면 로그인 성공 후 최초에 요청한 주소로 이동하게 된다.
                 .and()
                     .oauth2Login()
-                        .loginPage("/loginForm"); // 구글 로그인이 완료된 뒤에 후처리가 필요하다.
+                        .loginPage("/loginForm")// 구글 로그인이 완료된 뒤에 후처리가 필요하다. Tip. 구글 로그인이 안료되면 코드를 받지 않고, 액세스 토큰 + 사용자 프로필 정보를 동시에 받는다.
+                            .userInfoEndpoint()
+                                .userService(principalOauth2UserService); // 여기서 Oauth2User 타입의 객체를 전달해야 한다.
 
         return http.build();
     }

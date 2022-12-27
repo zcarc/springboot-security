@@ -23,10 +23,21 @@ import java.util.Map;
 // 이 클래스는 Authentication 객체에서 사용할 UserDetails 인터페이스를 상속해서 UserDetails 타입의 객체로 만들어준다.
 
 @Data
-@RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private final User user;
+    private User user; // 컴포지션
+    private Map<String, Object> attributes;
+
+    // 일반 로그인을 할 때, 사용하는 생성자
+    public PrincipalDetails(User user) {
+        this.user = user;
+    }
+
+    // OAuth2 로그인을 할 때, 사용하는 생성자
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     /**
      * UserDetails 오버라이딩 메서드들
@@ -97,11 +108,14 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 
     @Override
     public String getName() {
+        // 여기서는 중요하지 않아서 일단 null을 리턴
+        // return attributes.get("sub");
+
         return null;
     }
 }

@@ -86,3 +86,10 @@
 
 - 일반 로그인 또는 OAuth2 로그인으로 하는 경우로 각각 따로 컨트롤러를 생성하는데 한 번에 묶어서 처리하는 방법이 있다.
 - PrincipalDetails 클래스가 UserDetails, OAuth2User 인터페이스들을 동시에 구현하면 된다.
+
+## public UserDetails loadUserByUsername(String username), public OAuth2User loadUser(OAuth2UserRequest userRequest)
+
+- 두 메서드는 오버라이딩 하지 않아도 기본적으로 호출이 된다.
+- 이걸 오버라이딩 하는 이유는 기본 로그인 또는 OAuth2 로그인 모두를 "PrincipalDetails" 타입으로 리턴해서 "Authentication"에 바인딩 하기 위함이다.
+- 서로 다른 로그인 타입에서 기본 타입을 그대로 리턴한다면 각각 오버라이딩 하지 않아도 된다.
+- 각각의 메서드가 종료되면 @AuthenticationPrincipal 애노테이션이 생성된다. 그래서 객체에 애노테이션을 사용할 수 있다.

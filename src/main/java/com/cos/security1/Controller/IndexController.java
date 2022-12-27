@@ -65,11 +65,14 @@ public class IndexController {
     public String index() {
         return "index";
     }
+
     @ResponseBody
     @GetMapping("/user")
-    public String user() {
+    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails.getUser() = " + principalDetails.getUser());
         return "user";
     }
+
     @ResponseBody
     @GetMapping("/admin")
     public String admin() {

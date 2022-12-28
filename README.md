@@ -108,3 +108,7 @@
 - 네이버 
   - 개발자 센터에서 "redirect-uri" 와 일치하기만 하면 구글이나 페이스북과는 다르게 직접 주소를 지정할 수 있다.
 
+
+## http.authorizeRequests()
+
+- 시큐리티 처리에 "HttpServletRequest"를 사용한다는 것을 의미
